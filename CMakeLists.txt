@@ -20,3 +20,8 @@ add_executable(9_3_benchmark src/9/9_3_benchmark.c)
 target_include_directories(9_3_benchmark PRIVATE ${MPI_INCLUDE_DIR})
 target_link_directories(9_3_benchmark PRIVATE ${MPI_LIB_DIR})
 target_link_libraries(9_3_benchmark PRIVATE msmpi)
+
+add_executable(9_3_packed src/9/9_3_packed.c)
+target_include_directories(9_3_packed PRIVATE ${MPI_INCLUDE_DIR})
+target_link_directories(9_3_packed PRIVATE ${MPI_LIB_DIR})
+target_link_libraries(9_3_packed PRIVATE msmpi)

@@ -63,7 +63,7 @@ int main(int argc, char **argv) {
     MPI_Init(&argc, &argv);
     MPI_Comm_rank(MPI_COMM_WORLD, &rank);
     MPI_Comm_size(MPI_COMM_WORLD, &size);
-
+    double t_start = MPI_Wtime();
     if (size != BANK_COUNT + 1) {
         if (rank == BIG_BANK) {
             printf("Ошибка: запустите программу ровно на %d процессах.\n", BANK_COUNT + 1);
@@ -240,6 +240,23 @@ int main(int argc, char **argv) {
         }
     }
 
+    double t_end = MPI_Wtime();
+    double local_time = t_end - t_start;
+
+    if (rank == BIG_BANK) {
+        double max_time = local_time;
+        for (int src = 1; src < size; ++src) {
+            double t = 0.0;
+            MPI_Recv(&t, 1, MPI_DOUBLE, src, 999, MPI_COMM_WORLD, &status);
+            if (t > max_time) max_time = t;
+        }
+        printf("\n=== Замер времени MPI ===\n");
+        printf("Процессов: %d\n", size);
+        printf("Время выполнения (максимум по процессам): %.6f сек\n", max_time);
+    } else {
+        MPI_Send(&local_time, 1, MPI_DOUBLE, BIG_BANK, 999, MPI_COMM_WORLD);
+    }
+
     MPI_Finalize();
     return 0;
 }
@@ -284,4 +301,8 @@ int main(int argc, char **argv) {
   Получить 300.00 CNY
   Получить 200.00 USD
   Отдать   30.00 GBP
+
+=== Замер времени MPI ===
+Процессов: 4
+Время выполнения (максимум по процессам): 0.000649 сек
 */
