@@ -30,3 +30,8 @@ add_executable(10_3 src/10/10_3.c)
 target_include_directories(10_3 PRIVATE ${MPI_INCLUDE_DIR})
 target_link_directories(10_3 PRIVATE ${MPI_LIB_DIR})
 target_link_libraries(10_3 PRIVATE msmpi)
+
+add_executable(12_3 src/12/12_3.c)
+target_include_directories(12_3 PRIVATE ${MPI_INCLUDE_DIR})
+target_link_directories(12_3 PRIVATE ${MPI_LIB_DIR})
+target_link_libraries(12_3 PRIVATE msmpi)
